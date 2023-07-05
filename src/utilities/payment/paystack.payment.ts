@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import * as dotenv from "dotenv";
 import { PaystackPayI } from "../interface_utilities/payment.interface";
-import { createHmac } from "node:crypto";
+import { createHmac } from "crypto";
 dotenv.config();
 export class Paystack {
   key: string;

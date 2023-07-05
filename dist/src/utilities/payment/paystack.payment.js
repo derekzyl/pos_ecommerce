@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Paystack = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv = __importStar(require("dotenv"));
-const node_crypto_1 = require("node:crypto");
+const crypto_1 = require("crypto");
 dotenv.config();
 class Paystack {
     key;
@@ -51,7 +51,7 @@ class Paystack {
         return instance;
     }
     verifyPaystackHash(request_headers, request_body) {
-        const hash = (0, node_crypto_1.createHmac)("sha512", this.key)
+        const hash = (0, crypto_1.createHmac)("sha512", this.key)
             .update(JSON.stringify(request_body))
             .digest("hex");
         if (hash == request_headers["x-paystack-signature"])
