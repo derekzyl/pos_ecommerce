@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllSubCategory = exports.deleteSubCategory = exports.updateSubCategory = exports.getOneSubCategory = exports.createSubCategory = exports.getAllCategory = exports.deleteCategory = exports.updateCategory = exports.getOneCategory = exports.createCategory = void 0;
+const index_factory_1 = require("../../../general_factory/index.factory");
+const model_category_1 = require("./model.category");
+exports.createCategory = index_factory_1.GeneralIndex.createOneFactory(model_category_1.CATEGORY);
+exports.getOneCategory = index_factory_1.GeneralIndex.getOneFactory(model_category_1.CATEGORY);
+exports.updateCategory = index_factory_1.GeneralIndex.updateOneFactory(model_category_1.CATEGORY);
+exports.deleteCategory = index_factory_1.GeneralIndex.deleteOneFactory(model_category_1.CATEGORY);
+exports.getAllCategory = index_factory_1.GeneralIndex.getAllFactory(model_category_1.CATEGORY);
+exports.createSubCategory = index_factory_1.GeneralIndex.createOneFactory(model_category_1.SUB_CATEGORY);
+exports.getOneSubCategory = index_factory_1.GeneralIndex.getOneFactory(model_category_1.SUB_CATEGORY);
+exports.updateSubCategory = index_factory_1.GeneralIndex.updateOneFactory(model_category_1.SUB_CATEGORY);
+exports.deleteSubCategory = index_factory_1.GeneralIndex.deleteOneFactory(model_category_1.SUB_CATEGORY);
+exports.getAllSubCategory = index_factory_1.GeneralIndex.getAllFactory(model_category_1.SUB_CATEGORY);

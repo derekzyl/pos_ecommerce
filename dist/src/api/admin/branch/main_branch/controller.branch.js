@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllBranch = exports.deleteBranch = exports.updateBranch = exports.getOneBranch = exports.createBranch = void 0;
+const index_factory_1 = require("../../../general_factory/index.factory");
+const model_branch_1 = require("./model.branch");
+exports.createBranch = index_factory_1.GeneralIndex.createOneFactory(model_branch_1.BRANCH);
+exports.getOneBranch = index_factory_1.GeneralIndex.getOneFactory(model_branch_1.BRANCH);
+exports.updateBranch = index_factory_1.GeneralIndex.updateOneFactory(model_branch_1.BRANCH);
+exports.deleteBranch = index_factory_1.GeneralIndex.deleteOneFactory(model_branch_1.BRANCH);
+exports.getAllBranch = index_factory_1.GeneralIndex.getAllFactory(model_branch_1.BRANCH);
