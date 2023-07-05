@@ -17,6 +17,9 @@ const route_general_1 = __importDefault(require("./src/api/general_factory/route
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.get("/home", (req, res) => {
+    res.status(200).json({ hey: "welcome to jenny glow backend" });
+});
 app.use("/test", route_t_1.default);
 app.use("/admin", index_admin_1.default);
 app.use("/auth", route_auth_1.default);

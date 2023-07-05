@@ -16,6 +16,10 @@ const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.get("/home", (req, res) => {
+    res.status(200).json({hey:"welcome to jenny glow backend"})
+})
+    
 app.use("/test", testRouter);
 app.use("/admin", adminRouter);
 app.use("/auth", authRouter);
