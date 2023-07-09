@@ -12,15 +12,8 @@ const testRouter = Router();
 testRouter
   .route("/")
   .post(
-    multer_upload.fields([
-      { name: "file", maxCount: 1 },
-      { name: "game", maxCount: 2 },
-    ]),
-    formFileHandler<{ file: string; game: string[] }>(
-      { file: "", game: [] },
-      "test",
-      false
-    ),
+    multer_upload.fields([{ name: "file", maxCount: 1 }]),
+    formFileHandler<{ file: string }>({ file: "" }, "test", false),
     // AuthIndex.protector,
     // GeneralIndex.getUserPermissions(PermissionsE.CREATE_ROLE),
     TestIndex.createTest

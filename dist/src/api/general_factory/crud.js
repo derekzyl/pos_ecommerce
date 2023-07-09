@@ -204,7 +204,7 @@ class Crud {
                     throw (0, custom_error_1.APP_ERROR)(`${MyModels} is not successfully created`, http_response_1.HTTP_RESPONSE.NOT_FOUND);
                 data = queryG;
             }
-            this.response.status(200).json((0, response_message_1.responseMessage)({
+            this.response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
                 success_status: true,
                 message: "data fetched successfully",
                 data: data,

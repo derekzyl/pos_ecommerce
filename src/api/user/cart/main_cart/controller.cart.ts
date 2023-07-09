@@ -14,7 +14,7 @@ import { SHIPPING } from "../../../admin/shipping/main_shipping/model.shipping";
 import { CartDocI } from "../interface_cart/interface.cart";
 import { calculateAddressFee } from "../../../sales/online/main_online/service.online";
 import { n } from "../../../../utilities/number_checker";
-import { networkInterfaces } from "os";
+
 
 //todo address receipt
 

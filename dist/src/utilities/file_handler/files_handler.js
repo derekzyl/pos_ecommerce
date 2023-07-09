@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileHandler = void 0;
+exports.imageDeleteHandler = exports.FileHandler = void 0;
 //todo sharp lets go
 const sharp_1 = __importDefault(require("sharp"));
 const cloudinary_1 = require("./cloudinary");
@@ -74,3 +74,33 @@ class FileHandler {
     }
 }
 exports.FileHandler = FileHandler;
+async function imageDeleteHandler(file_names, type = "CLOUDINARY") {
+    switch (type) {
+        case "CLOUDINARY":
+            {
+                if (Array.isArray(file_names)) {
+                    for (const file_name of file_names) {
+                        file_handler(file_name);
+                    }
+                }
+                else {
+                    file_handler(file_names);
+                }
+            }
+            break;
+        default:
+            {
+                return null;
+            }
+            break;
+    }
+}
+exports.imageDeleteHandler = imageDeleteHandler;
+function file_handler(file_name) {
+    const get_public_id = file_name.split("/").slice(-2);
+    const image = get_public_id[1].split(".")[0];
+    const public_id = `${get_public_id[0]}/${image}`;
+    console.log("a typical example of public id", public_id);
+    const data = new cloudinary_1.CloudinaryHandler();
+    const delete_from_cloudinary = data.deleteFileFromCloudinary(public_id);
+}

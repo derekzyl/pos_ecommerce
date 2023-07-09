@@ -23,4 +23,3 @@ var AcceptanceStatusE;
     AcceptanceStatusE["REJECTED"] = "REJECTED";
     AcceptanceStatusE["PENDING"] = "PENDING";
 })(AcceptanceStatusE = exports.AcceptanceStatusE || (exports.AcceptanceStatusE = {}));
-// export type OnlineBodyT = Pick<OnlineI,  "address"| ""  |||||||||    >

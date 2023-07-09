@@ -17,6 +17,7 @@ import * as dotenv from "dotenv";
 import authLimiter from "./src/utilities/rate_limiter";
 
 import compression from "compression";
+import frontRouter from "./src/api/frontend/index.frontend";
 dotenv.config();
 
 const app: Express = express();
@@ -46,6 +47,7 @@ app.use("/sales", salesRouter);
 app.use("/user", userRouter);
 app.use("/gen", generalRouter);
 app.use("/notification", notificationRouter);
+app.use("/fe", frontRouter);
 
 // });
 app.use(errorCenter);

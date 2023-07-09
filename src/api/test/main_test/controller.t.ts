@@ -8,6 +8,7 @@ import { PaymentIndex } from "../../../utilities/payment/index.payment";
 import { PaystackPayI } from "../../../utilities/interface_utilities/payment.interface";
 import { generateId } from "../../../utilities/id_generator";
 import { IdGenE } from "../../../utilities/interface_utilities/id_gen.interface";
+import { imageDeleteHandler } from "../../../utilities/file_handler/files_handler";
 
 export const createTest = async (
   request: Request,
@@ -18,8 +19,13 @@ export const createTest = async (
   console.log(
     "<---------request body file",
     request.body.file,
+
     "-------------------------------->"
   );
+  if (request.body.file) {
+    imageDeleteHandler(request.body.file);
+  }
+
   console.log("<---------request body game", request.body.game);
 
   const fg = generateId(IdGenE.WEB_SALES);

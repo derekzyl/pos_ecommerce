@@ -237,7 +237,7 @@ export class Crud {
           );
         data = queryG;
       }
-      this.response.status(200).json(
+      this.response.status(HTTP_RESPONSE.OK).json(
         responseMessage({
           success_status: true,
           message: "data fetched successfully",

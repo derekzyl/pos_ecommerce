@@ -27,3 +27,10 @@ export interface RequestBody extends Request {
   role: any;
   params: any;
 }
+
+export type CreateUserT = {
+  email: string;
+  password: string;
+  phone: string;
+  confirm_password: string;
+};

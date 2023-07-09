@@ -127,7 +127,7 @@ export const createBranchInventory = async (
       branch: body.branch,
       inventory_id,
       products,
-      inventory_receipt,
+      inventory_receipt: body.inventory_receipt,
     };
 
     for (const product of products) {

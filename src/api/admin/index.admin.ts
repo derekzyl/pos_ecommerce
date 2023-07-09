@@ -9,6 +9,10 @@ import {
 import vatRouter from "./vat/main_vat/route.vat";
 import shippingRouter from "./shipping/main_shipping/route.role";
 import dispatchRouter from "./dispatch/main_dispatch/route.dispatch";
+import {
+  campaignRouter,
+  sliderRouter,
+} from "../frontend/campaigns/main_campaign/route.campaign";
 
 const adminRouter = Router();
 
@@ -20,5 +24,7 @@ adminRouter.use("/sub-category", subCategoryRouter);
 adminRouter.use("/vat", vatRouter);
 adminRouter.use("/shipping", shippingRouter);
 adminRouter.use("/dispatch", dispatchRouter);
+adminRouter.use("/campaign", campaignRouter);
+adminRouter.use("/slider", sliderRouter);
 
 export default adminRouter;

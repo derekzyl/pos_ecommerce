@@ -184,7 +184,7 @@ export const deleteShippingFee = async (
     await shipping_crud.delete<ShippingDocI>(
       { model: SHIPPING, exempt: "" },
       {
-        id: request.params.id,
+        _id: request.params.id,
       }
     );
   } catch (error) {

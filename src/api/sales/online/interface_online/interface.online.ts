@@ -2,6 +2,8 @@ import { Model, Types } from "mongoose";
 import { SalesI } from "../../interface_sales/interface.sales";
 import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
 import { DateTime } from "aws-sdk/clients/devicefarm";
+import { CreateUserT } from "../../../auth/interface_auth/interface.auth";
+import { AddressBodyT } from "../../../user/address/interface_address/interface.address";
 
 export enum MessageTypeE {
   TEXT = "TEXT",
@@ -53,6 +55,7 @@ export interface OnlineI extends Omit<SalesI, "products" | "order_status"> {
   is_being_handled: boolean;
   message: MessageT[];
   date_ordered: Date;
+  updated_by: Types.ObjectId;
 }
 
 export interface OnlineDocI extends OnlineI, Document {}
@@ -66,3 +69,9 @@ export interface OnlineModelI extends Model<OnlineDocI> {
 }
 
 // export type OnlineBodyT = Pick<OnlineI,  "address"| ""  |||||||||    >
+
+export interface notLoggedIn {
+  user?: CreateUserT;
+  address: AddressBodyT;
+  products: Pick<ProductAndCount, "product" | "product_total_count">[];
+}

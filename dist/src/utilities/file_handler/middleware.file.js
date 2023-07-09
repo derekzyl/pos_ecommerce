@@ -41,7 +41,7 @@ const formFileHandler = (field, folder_name, use_email_and_key) => async (reques
                     for (const file of request.files[key]) {
                         const file_data = {
                             file_data: file,
-                            file_folder: `${folder_name}/` + use_email_and_key ? d : "",
+                            file_folder: `${folder_name}/`,
                         };
                         const file_name = new files_handler_1.FileHandler(file_data);
                         const j = await file_name.imageHandler();
@@ -53,7 +53,7 @@ const formFileHandler = (field, folder_name, use_email_and_key) => async (reques
                 for (const file of request.files[key]) {
                     const file_data = {
                         file_data: file,
-                        file_folder: `${folder_name}/` + use_email_and_key ? d : "",
+                        file_folder: `${folder_name}/`,
                     };
                     const file_name = new files_handler_1.FileHandler(file_data);
                     const j = await file_name.imageHandler();
@@ -73,15 +73,12 @@ exports.formFileHandler = formFileHandler;
  * @param user this is the logged in user details
  * @returns the file storage location
  */
-function stringFileHandler(file, folder_name, key, use_email_and_key, user) {
+function stringFileHandler(file, folder_name, key) {
     const split_incoming_string = file.split(",");
     const string_to_buffer = split_incoming_string[1];
     const get_application_type = split_incoming_string[0];
     const get_extension_name = get_application_type.split("/")[1];
     const buffer = Buffer.from(string_to_buffer, "base64");
-    let d = "";
-    if (use_email_and_key && user)
-        d = `${user.email.split(".")[0]}/${key}/`;
     const files = {
         field_name: key,
         buffer,
@@ -91,7 +88,7 @@ function stringFileHandler(file, folder_name, key, use_email_and_key, user) {
         mimetype: get_application_type,
     };
     const file_data = {
-        file_folder: `${folder_name}/${d}`,
+        file_folder: `${folder_name}/`,
         file_data: files,
     };
     const file_name = new files_handler_1.FileHandler(file_data);

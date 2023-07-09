@@ -37,7 +37,7 @@ export const getOneNotification = async (
   const crud_notification = new Crud(request, response, next);
   crud_notification.getOne<NotificationDocI>(
     { model: NOTIFICATION, exempt: "-__v -created_at updated_at" },
-    { notification_name: request.params.id },
+    { _id: request.params.id },
     {}
   );
 };
@@ -65,7 +65,7 @@ export const updateNotification = async (
   const crud_notification = new Crud(request, response, next);
   crud_notification.update<NotificationT, NotificationDocI>(
     { model: NOTIFICATION, exempt: "-__v" },
-    { notification_name: request.params.id },
+    { _id: request.params.id },
     { ...body }
   );
 };
@@ -77,7 +77,7 @@ export const deleteNotification = async (
   const crud_notification = new Crud(request, response, next);
   crud_notification.delete<NotificationDocI>(
     { model: NOTIFICATION, exempt: "-__v -created_at -updated_at" },
-    { notification_name: request.params.id }
+    { _id: request.params.id }
   );
 };
 
@@ -90,6 +90,6 @@ export const updateReadNotification = async (
   crud_notification.update<NotificationT, NotificationDocI>(
     { model: NOTIFICATION, exempt: "-__v" },
     { read_receipt: true },
-    { notification_name: request.params.id }
+    { _id: request.params.id }
   );
 };

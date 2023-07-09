@@ -105,6 +105,7 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
       ref: "ADDRESS",
       required: true,
     },
+    updated_by: { type: Schema.Types.ObjectId, ref: "USER" },
     message: [
       {
         title: { type: String },

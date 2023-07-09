@@ -45,7 +45,7 @@ export const getOneReview = async (
   const crud_review = new Crud(request, response, next);
   crud_review.getOne<ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
-    { id: request.params.id },
+    { _id: request.params.id },
     { model: "profile", fields: "-user" }
   );
 };
@@ -100,7 +100,7 @@ export const updateReview = async (
   crud_review.update<ReviewBodyT, ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
     { ...body },
-    { id: request.params.id },
+    { _id: request.params.id }
   );
 };
 export const deleteReview = async (
@@ -111,6 +111,6 @@ export const deleteReview = async (
   const crud_review = new Crud(request, response, next);
   crud_review.delete<ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
-    { id: request.params.id }
+    { _id: request.params.id }
   );
 };

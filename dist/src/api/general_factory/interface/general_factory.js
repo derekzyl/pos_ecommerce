@@ -67,11 +67,37 @@ var PermissionsE;
     PermissionsE["DELETE_DISPATCH"] = "DELETE_DISPATCH";
     PermissionsE["HANDLE_DISPATCH"] = "HANDLE_DISPATCH";
     // manage online order
+    PermissionsE["CREATE_CAMPAIGN"] = "CREATE_CAMPAIGN";
+    PermissionsE["VIEW_CAMPAIGN"] = "VIEW_CAMPAIGN";
+    PermissionsE["EDIT_CAMPAIGN"] = "EDIT_CAMPAIGN";
+    PermissionsE["DELETE_CAMPAIGN"] = "DELETE_CAMPAIGN";
+    PermissionsE["HANDLE_CAMPAIGN"] = "HANDLE_CAMPAIGN";
+    // frontend
+    PermissionsE["CREATE_SLIDER"] = "CREATE_SLIDER";
+    PermissionsE["VIEW_SLIDER"] = "VIEW_SLIDER";
+    PermissionsE["EDIT_SLIDER"] = "EDIT_SLIDER";
+    PermissionsE["DELETE_SLIDER"] = "DELETE_SLIDER";
+    PermissionsE["HANDLE_SLIDER"] = "HANDLE_SLIDER";
+    // slider
+    PermissionsE["CREATE_EXPENSES"] = "CREATE_EXPENSES";
+    PermissionsE["VIEW_EXPENSES"] = "VIEW_EXPENSES";
+    PermissionsE["EDIT_EXPENSES"] = "EDIT_EXPENSES";
+    PermissionsE["DELETE_EXPENSES"] = "DELETE_EXPENSES";
+    PermissionsE["CREATE_SUPPLIER"] = "CREATE_SUPPLIER";
+    PermissionsE["VIEW_SUPPLIER"] = "VIEW_SUPPLIER";
+    PermissionsE["EDIT_SUPPLIER"] = "EDIT_SUPPLIER";
+    PermissionsE["DELETE_SUPPLIER"] = "DELETE_SUPPLIER";
+    PermissionsE["HANDLE_SUPPLIER"] = "HANDLE_SUPPLIER";
     PermissionsE["CREATE_ONLINE_ORDER"] = "CREATE_ONLINE_ORDER";
     PermissionsE["VIEW_ONLINE_ORDER"] = "VIEW_ONLINE_ORDER";
     PermissionsE["EDIT_ONLINE_ORDER"] = "EDIT_ONLINE_ORDER";
     PermissionsE["DELETE_ONLINE_ORDER"] = "DELETE_ONLINE_ORDER";
     PermissionsE["HANDLE_ONLINE_ORDER"] = "HANDLE_ONLINE_ORDER";
+    PermissionsE["CREATE_REPORT"] = "CREATE_REPORT";
+    PermissionsE["VIEW_REPORT"] = "VIEW_REPORT";
+    PermissionsE["EDIT_REPORT"] = "EDIT_REPORT";
+    PermissionsE["DELETE_REPORT"] = "DELETE_REPORT";
+    PermissionsE["HANDLE_REPORT"] = "HANDLE_REPORT";
     PermissionsE["SUPER_ADMIN"] = "SUPER_ADMIN";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
 exports.time_stamps = {

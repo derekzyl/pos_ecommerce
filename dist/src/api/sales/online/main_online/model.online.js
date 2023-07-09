@@ -93,6 +93,7 @@ exports.onlineSchema = new mongoose_1.Schema({
         ref: "ADDRESS",
         required: true,
     },
+    updated_by: { type: mongoose_1.Schema.Types.ObjectId, ref: "USER" },
     message: [
         {
             title: { type: String },

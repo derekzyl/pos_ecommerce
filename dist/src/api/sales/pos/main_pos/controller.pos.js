@@ -120,7 +120,7 @@ const createPos = async (request, response, next) => {
 exports.createPos = createPos;
 const getOnePos = async (request, response, next) => {
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.getOne({ model: model_pos_1.POS, exempt: "-__v -created_at updated_at" }, { id: request.params.id }, {});
+    crud_pos.getOne({ model: model_pos_1.POS, exempt: "-__v -created_at updated_at" }, { _id: request.params.id }, {});
 };
 exports.getOnePos = getOnePos;
 const getManyPos = async (request, response, next) => {
@@ -157,11 +157,11 @@ exports.getManyPosProduct = getManyPosProduct;
 const updatePos = async (request, response, next) => {
     const body = request.body;
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.update({ model: model_pos_1.POS, exempt: "-__v" }, { ...body }, { id: request.params.id });
+    crud_pos.update({ model: model_pos_1.POS, exempt: "-__v" }, { ...body }, { _id: request.params.id });
 };
 exports.updatePos = updatePos;
 const deletePos = async (request, response, next) => {
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.delete({ model: model_pos_1.POS, exempt: "-__v -created_at -updated_at" }, { id: request.params.id });
+    crud_pos.delete({ model: model_pos_1.POS, exempt: "-__v -created_at -updated_at" }, { _id: request.params.id });
 };
 exports.deletePos = deletePos;

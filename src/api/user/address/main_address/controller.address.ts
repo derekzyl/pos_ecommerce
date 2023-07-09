@@ -13,8 +13,6 @@ import { Types } from "mongoose";
 import { phone_regex } from "../../../../utilities/regex";
 import { APP_ERROR } from "../../../../utilities/custom_error";
 
-//todo address receipt
-
 export const createAddress = async (
   request: Request,
   response: Response,
@@ -55,7 +53,7 @@ export const getOneAddress = async (
     request.user
   );
 
-  console.log("request", request.params.id, "this is the id");
+
   const user = check_user_clearance ? undefined : request.user.id;
   const crud_address = new Crud(request, response, next);
   crud_address.getOne<AddressDocI>(
@@ -89,7 +87,7 @@ export const updateAddress = async (
   crud_review.update<AddressBodyT, AddressDocI>(
     { model: ADDRESS, exempt: "-__v" },
     { ...body },
-    { id: request.params.id }
+    { _id: request.params.id }
   );
 };
 export const deleteAddress = async (
@@ -100,6 +98,6 @@ export const deleteAddress = async (
   const crud_review = new Crud(request, response, next);
   crud_review.delete<AddressDocI>(
     { model: ADDRESS, exempt: "-__v -created_at -updated_at" },
-    { id: request.params.id }
+    { _id: request.params.id }
   );
 };

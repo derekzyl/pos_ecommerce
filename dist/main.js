@@ -42,6 +42,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const dotenv = __importStar(require("dotenv"));
 const rate_limiter_1 = __importDefault(require("./src/utilities/rate_limiter"));
 const compression_1 = __importDefault(require("compression"));
+const index_frontend_1 = __importDefault(require("./src/api/frontend/index.frontend"));
 dotenv.config();
 const app = (0, express_1.default)();
 // security adding and implemnentations
@@ -68,6 +69,7 @@ app.use("/sales", index_sales_1.default);
 app.use("/user", index_user_1.default);
 app.use("/gen", route_general_1.default);
 app.use("/notification", route_notification_1.default);
+app.use("/fe", index_frontend_1.default);
 // });
 app.use(custom_error_1.errorCenter);
 exports.default = app;

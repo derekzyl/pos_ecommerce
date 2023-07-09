@@ -8,9 +8,13 @@ const model_role_1 = require("../../admin/role/main_role/model.role");
 const index_payment_1 = require("../../../utilities/payment/index.payment");
 const id_generator_1 = require("../../../utilities/id_generator");
 const id_gen_interface_1 = require("../../../utilities/interface_utilities/id_gen.interface");
+const files_handler_1 = require("../../../utilities/file_handler/files_handler");
 const createTest = async (request, response, next) => {
     // eslint-disable-next-line prefer-const
     console.log("<---------request body file", request.body.file, "-------------------------------->");
+    if (request.body.file) {
+        (0, files_handler_1.imageDeleteHandler)(request.body.file);
+    }
     console.log("<---------request body game", request.body.game);
     const fg = (0, id_generator_1.generateId)(id_gen_interface_1.IdGenE.WEB_SALES);
     console.log(fg);

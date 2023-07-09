@@ -6,6 +6,7 @@ import { Readable } from "stream";
 dotenv.config();
 
 import { v2 as cloudinary } from "cloudinary";
+import { APP_ERROR } from "../custom_error";
 
 cloudinary.config({
   cloud_name: "cybergenii",
@@ -47,13 +48,13 @@ export class CloudinaryHandler {
       const cld_upload_stream = cloudinary.uploader.upload_stream(
         { folder: link },
         function (error, result) {
-  
-
           // console.log(error, result);
           if (error) reject(error);
           if (result) {
-            console.log(result, 'this is a result sheet');
-            
+            console.log(
+              "<---------------------------- this is result--",
+              result
+            );
             resolve(result.secure_url);
           }
         }
@@ -69,9 +70,15 @@ export class CloudinaryHandler {
       // const uploaded_data = await cloudinary.uploader.upload(file);
     });
   }
+  async deleteFileFromCloudinary(file_id: string) {
+    try {
+      const f = await cloudinary.uploader.destroy(file_id);
+      console.log("a file example result", f);
+    } catch (error: any) {
+      return APP_ERROR(error);
+    }
+  }
 }
-
-
 
 // cloudinary response DataTransfer
 

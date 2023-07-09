@@ -8,6 +8,7 @@ import {
   OnlineDocI,
   OnlineI,
   OnlineOrderStatusE,
+  notLoggedIn,
 } from "../interface_online/interface.online";
 import { ADDRESS } from "../../../user/address/main_address/model.address";
 import { APP_ERROR } from "../../../../utilities/custom_error";
@@ -40,6 +41,13 @@ import { NOTIFICATION } from "../../../notification/main_notification/model.noti
 import { REVIEW } from "../../../review/main_review/model.review";
 import { PROFILE } from "../../../user/profile/main_profile/model.profile";
 import { Crud } from "../../../general_factory/crud";
+import { handleCheckOut } from "./factory.online";
+import {
+  protectorFunction,
+  signupFactory,
+} from "../../../auth/main_auth/factory.auth";
+import { createAddressFactory } from "../../../user/address/main_address/factory.address";
+import { addCartFunction } from "../../../user/cart/main_cart/factory.cart";
 
 // 1) create a post online order ✅done
 // 2) the dispatch rider should be able to maintain the messages on the order dispatch update
@@ -56,130 +64,34 @@ export const createOnlineSales = async (
   next: NextFunction
 ) => {
   try {
-    // 1.1) get the request body
-
     const body: OnlineBodyT = request.body;
-    // 1.2 find if the user has any address at all
-    const find_address = await ADDRESS.find({ user: request.user.id });
-    if (!find_address)
-      throw APP_ERROR("No address found", HTTP_RESPONSE.BAD_REQUEST);
-    // 1.3  get the user default address
-    // find if the user has a default address
-    let user_address = await ADDRESS.findOne({
-      user: request.user.id,
-      is_default: true,
-    });
-    if (body.address) user_address = await ADDRESS.findById(body.address);
-    const shipping_fee = calculateAddressFee(user_address!.id);
+    const user = request.user;
+    const checkOut = await handleCheckOut(body, user);
+    return response.redirect(HTTP_RESPONSE.CONTINUE, checkOut);
+  } catch (error) {
+    next(error);
+  }
+};
 
-    if (!user_address)
-      throw APP_ERROR("you have no default address", HTTP_RESPONSE.BAD_REQUEST);
+export const checkOutSales = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const body: notLoggedIn = request.body;
+    const user = request.headers.authorization
+      ? await protectorFunction(request)
+      : (await signupFactory(request, body.user!)).newUSER;
+    if (!user) throw APP_ERROR("no user defined");
 
-    const get_vat = await VAT.findOne({ vat_name: VatE.ONLINE });
-
-    // 1.4 get the cart id
-    let total_shipping_fee = 0;
-    // amount after discount is applied
-    let total_amount = 0;
-
-    //amount before discount
-    let original_amount = 0;
-
-    //vat shipping fee_total price
-    let amount_sold = 0;
-    // discount
-    let discount = 0;
-    // product and count
-    const products: ProductAndCount[] = [];
-
-    // first message
-    const message: MessageT[] = [
-      {
-        read_receipt: false,
-        created_at: new Date(),
-        information:
-          "your order has been created and payment is being confirmed",
-        updated_at: new Date(),
-        title: "payment initialized",
-        message_type: MessageTypeE.TEXT,
-      },
-    ];
-
-    for (const cart_item of body.cart_items) {
-      const get_cart_item_in_db = await CART_ITEM.findById(cart_item);
-      if (!get_cart_item_in_db) throw APP_ERROR("cart_item not found");
-      const get_product = await PRODUCT.findById(
-        get_cart_item_in_db.product.id
-      );
-      if (!get_product) throw APP_ERROR("cart_item not found");
-
-      // a) calculate total product price
-      const product_shipping_fee =
-        (await shipping_fee) * n(get_cart_item_in_db.product_total_count);
-      const total_product_price =
-        n(get_product.price) * n(get_cart_item_in_db.product_total_count);
-      const total_product_price_and_discount =
-        total_product_price +
-        (total_product_price * n(get_product.discount_percentage)) / 100;
-      const get_total_discount =
-        (total_product_price * n(get_product.discount_percentage)) / 100;
-      // updating the product data
-      const product: ProductAndCount = {
-        product: get_product.id,
-        product_total_count: get_cart_item_in_db.product_total_count,
-        product_total_price: total_product_price_and_discount,
-        shipping_fee: product_shipping_fee,
-      };
-      products.push(product);
-
-      // concatenating the total cumulative data
-      original_amount += total_product_price;
-      total_amount += total_product_price_and_discount;
-      discount += get_total_discount;
-      total_shipping_fee += product_shipping_fee;
-
-      //lets start calculations
-    }
-
-    const vat = get_vat?.vat_percentage
-      ? (total_amount * n(get_vat?.vat_percentage)) / 100
-      : 0;
-    // 1.5 get data from cart and update the  online checkout
-    // what to omit a payment_method, payment_status, sales_type,
-    amount_sold = vat + total_shipping_fee + total_amount;
-    const online_checkout: Partial<OnlineI> = {
-      order_id: generateId(IdGenE.WEB_SALES),
-      user: request.user.id,
-      address: user_address.id,
-      message,
-      products,
-      vat,
-      amount_sold,
-      server_amount_sold: amount_sold,
-      server_total: total_amount,
-      discount,
-      total_amount,
-      original_amount,
-    };
-    const create_online_order = new ONLINE_ORDER(online_checkout);
-    const created_order = await create_online_order.save();
-
-    const paystack_data: PaystackPayI = {
-      email: request.user.email,
-      amount: created_order.amount_sold * 100,
-      reference: created_order.order_id,
-      metadata: created_order.products.toString(),
-    };
-
-    // lets  now move to paystack payment
-
-    const paystack = PaymentIndex.paystack;
-    const pay = new paystack();
-    const init_pay = await pay.initialize(paystack_data);
-    return response.redirect(
-      HTTP_RESPONSE.CONTINUE,
-      init_pay.data.authorization_url
+    const add_address = await createAddressFactory(body.address, user);
+    const add_cart = await addCartFunction(body.products, user);
+    const handle_checkout = await handleCheckOut(
+      { cart_items: add_cart, address: add_address.id },
+      user
     );
+    return response.redirect(HTTP_RESPONSE.CONTINUE, handle_checkout);
   } catch (error) {
     next(error);
   }
@@ -553,7 +465,7 @@ export const getManyOrderByUser = async (
   }
 };
 
-export const transfer_order = async (
+export const transferOrder = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -584,7 +496,7 @@ export const transfer_order = async (
   }
 };
 
-export const handle_transfer_order = async (
+export const handleTransferOrder = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -592,12 +504,8 @@ export const handle_transfer_order = async (
   try {
     const get_order = await ONLINE_ORDER.findById(request.params.id);
     if (!get_order) throw APP_ERROR("the order is not found");
-    const {
-      status,
-      staff_id,
-    }: { status: AcceptanceStatusE; staff_id: Types.ObjectId } = request.body;
-    const find_staff = await STAFF.findById(staff_id);
-    if (!find_staff) throw APP_ERROR("staff not found");
+    const { status }: { status: AcceptanceStatusE } = request.body;
+
     if (status === AcceptanceStatusE.ACCEPTED) {
       const find_transfer = get_order.transfer_handling.find(
         (t) =>
@@ -619,6 +527,88 @@ export const handle_transfer_order = async (
     }
 
     get_order.save();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateOrderByStaff = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const body: Pick<
+      OnlineI,
+      | "products"
+      | "branch"
+      | "transfer_handling"
+      | "date_ordered"
+      | "address"
+      | "updated_by"
+      | "payment_status"
+      | "is_being_handled"
+      | "order_status"
+      | "dispatch"
+      | "is_ready_for_dispatch"
+      | "message"
+      | "payment_method"
+      | "order_type"
+    > = request.body;
+    const crud_dispatch = new Crud(request, response, next);
+
+    crud_dispatch.update<OnlineI, OnlineDocI>(
+      {
+        model: ONLINE_ORDER,
+        exempt:
+          "-__v -created_at -updated_at -user -vat -server_total -server_amount_sold  ",
+      },
+      { ...body, updated_by: request.user.id },
+      { _id: request.params.id }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateOrderByAdmin = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const body: Omit<OnlineI, "updated_by"> = request.body;
+
+    const crud_dispatch = new Crud(request, response, next);
+    crud_dispatch.update<OnlineI, OnlineDocI>(
+      {
+        model: ONLINE_ORDER,
+        exempt:
+          "-__v -created_at -updated_at -user -vat -server_total -server_amount_sold  ",
+      },
+
+      { ...body, updated_by: request.user.id },
+      { _id: request.params.id }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteOrderByStaff = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const crud_dispatch = new Crud(request, response, next);
+    crud_dispatch.delete<OnlineDocI>(
+      {
+        model: ONLINE_ORDER,
+        exempt:
+          "-__v -created_at -updated_at -user -vat -server_total -server_amount_sold  ",
+      },
+      { _id: request.params.id }
+    );
   } catch (error) {
     next(error);
   }

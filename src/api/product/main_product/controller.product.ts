@@ -6,6 +6,8 @@ import {
 } from "../interface_product/interface.product";
 import { Crud } from "../../general_factory/crud";
 import { PRODUCT } from "./model.product";
+import { APP_ERROR } from "../../../utilities/custom_error";
+import { imageDeleteHandler } from "../../../utilities/file_handler/files_handler";
 
 export const createProduct = async (
   request: Request,
@@ -15,7 +17,7 @@ export const createProduct = async (
   //todo: send the images to aws or cloudinary
   try {
     const body: ProductBodyI = request.body;
-    // body.search_tags = Array.from(body.search_tags);
+
     const b = body.search_tag.split(" ");
 
     // console.log(body.search_tags, "take by one");
@@ -46,8 +48,16 @@ export const getOneProduct = async (
   const crud_product = new Crud(request, response, next);
   crud_product.getOne<ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
-    { id: request.params.id },
-    {}
+    { _id: request.params.id },
+
+    [
+      { model: "category" },
+      {
+        model: "sub_category",
+        fields: "name image",
+      },
+      { model: "reviews" },
+    ]
   );
 };
 
@@ -80,12 +90,25 @@ export const updateProduct = async (
   response: Response,
   next: NextFunction
 ) => {
-  const body = request.body;
+  const body: ProductBodyI = request.body;
+  if (body.image) {
+    const get_product = await PRODUCT.findById(request.params.id);
+    if (!get_product) throw APP_ERROR("product not found");
+    get_product.image ? imageDeleteHandler(get_product.image) : "";
+  }
+  if (body.other_image.length > 0) {
+    const get_product = await PRODUCT.findById(request.params.id);
+    if (!get_product) throw APP_ERROR("product not found");
+    get_product.other_image.length > 0
+      ? imageDeleteHandler(get_product.other_image)
+      : "";
+  }
+
   const crud_product = new Crud(request, response, next);
   crud_product.update<ProductBodyI, ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
     { ...body },
-    { id: request.params.id }
+    { _id: request.params.id }
   );
 };
 export const deleteProduct = async (
@@ -93,6 +116,14 @@ export const deleteProduct = async (
   response: Response,
   next: NextFunction
 ) => {
+  const get_product = await PRODUCT.findById(request.params.id);
+  if (!get_product) throw APP_ERROR("product not found");
+  get_product.image ? imageDeleteHandler(get_product.image) : "";
+
+  get_product.other_image.length > 0
+    ? imageDeleteHandler(get_product.other_image)
+    : "";
+
   const crud_product = new Crud(request, response, next);
   crud_product.delete<ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },

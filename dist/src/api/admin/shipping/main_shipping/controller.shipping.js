@@ -125,7 +125,7 @@ const deleteShippingFee = async (request, response, next) => {
     try {
         const shipping_crud = new crud_1.Crud(request, response, next);
         await shipping_crud.delete({ model: model_shipping_1.SHIPPING, exempt: "" }, {
-            id: request.params.id,
+            _id: request.params.id,
         });
     }
     catch (error) {

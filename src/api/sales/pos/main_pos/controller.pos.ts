@@ -147,7 +147,7 @@ export const getOnePos = async (
   const crud_pos = new Crud(request, response, next);
   crud_pos.getOne<PosDocI>(
     { model: POS, exempt: "-__v -created_at updated_at" },
-    { id: request.params.id },
+    { _id: request.params.id },
     {}
   );
 };
@@ -211,7 +211,7 @@ export const updatePos = async (
   crud_pos.update<PosBodyI, PosDocI>(
     { model: POS, exempt: "-__v" },
     { ...body },
-    { id: request.params.id },
+    { _id: request.params.id }
   );
 };
 export const deletePos = async (
@@ -222,6 +222,6 @@ export const deletePos = async (
   const crud_pos = new Crud(request, response, next);
   crud_pos.delete<PosDocI>(
     { model: POS, exempt: "-__v -created_at -updated_at" },
-    { id: request.params.id }
+    { _id: request.params.id }
   );
 };

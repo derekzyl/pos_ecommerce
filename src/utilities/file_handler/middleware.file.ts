@@ -53,7 +53,7 @@ export const formFileHandler =
             for (const file of request.files[key]) {
               const file_data: fileValueI = {
                 file_data: file,
-                file_folder: `${folder_name}/` + use_email_and_key ? d : "",
+                file_folder: `${folder_name}/`,
               };
               const file_name = new FileHandler(file_data);
               const j = await file_name.imageHandler();
@@ -64,7 +64,7 @@ export const formFileHandler =
           for (const file of request.files[key]) {
             const file_data: fileValueI = {
               file_data: file,
-              file_folder: `${folder_name}/` + use_email_and_key ? d : "",
+              file_folder: `${folder_name}/`,
             };
             const file_name = new FileHandler(file_data);
             const j = await file_name.imageHandler();
@@ -88,18 +88,16 @@ export function stringFileHandler(
   file: string,
   folder_name: string,
   key: string,
-  use_email_and_key: boolean,
-  user?: UserI
+
 ) {
   const split_incoming_string = file.split(",");
   const string_to_buffer = split_incoming_string[1];
   const get_application_type = split_incoming_string[0];
   const get_extension_name = get_application_type.split("/")[1];
   const buffer = Buffer.from(string_to_buffer, "base64");
-  let d = "";
 
-  if (use_email_and_key && user)
-    d = `${user.email.split(".")[0]}/${key as string}/`;
+
+
 
   const files: fileDataI = {
     field_name: key,
@@ -113,7 +111,7 @@ export function stringFileHandler(
     mimetype: get_application_type,
   };
   const file_data: fileValueI = {
-    file_folder: `${folder_name}/${d}`,
+    file_folder: `${folder_name}/`,
     file_data: files,
   };
   const file_name = new FileHandler(file_data);

@@ -7,7 +7,6 @@ const permission_handler_1 = require("../../../general_factory/permission_handle
 const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const regex_1 = require("../../../../utilities/regex");
 const custom_error_1 = require("../../../../utilities/custom_error");
-//todo address receipt
 const createAddress = async (request, response, next) => {
     try {
         const user = request.user;
@@ -31,7 +30,6 @@ const createAddress = async (request, response, next) => {
 exports.createAddress = createAddress;
 const getOneAddress = async (request, response, next) => {
     const check_user_clearance = (0, permission_handler_1.checkPermissions)(general_factory_1.PermissionsE.VIEW_USER_PROFILE, request.user);
-    console.log("request", request.params.id, "this is the id");
     const user = check_user_clearance ? undefined : request.user.id;
     const crud_address = new crud_1.Crud(request, response, next);
     crud_address.getOne({ model: model_address_1.ADDRESS, exempt: "-__v -user " }, { _id: request.params.id, user }, {});
@@ -45,11 +43,11 @@ exports.getManyAddress = getManyAddress;
 const updateAddress = async (request, response, next) => {
     const body = request.body;
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.update({ model: model_address_1.ADDRESS, exempt: "-__v" }, { ...body }, { id: request.params.id });
+    crud_review.update({ model: model_address_1.ADDRESS, exempt: "-__v" }, { ...body }, { _id: request.params.id });
 };
 exports.updateAddress = updateAddress;
 const deleteAddress = async (request, response, next) => {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.delete({ model: model_address_1.ADDRESS, exempt: "-__v -created_at -updated_at" }, { id: request.params.id });
+    crud_review.delete({ model: model_address_1.ADDRESS, exempt: "-__v -created_at -updated_at" }, { _id: request.params.id });
 };
 exports.deleteAddress = deleteAddress;

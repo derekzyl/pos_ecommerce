@@ -88,3 +88,39 @@ export class FileHandler implements filePropertyI {
     return v;
   }
 }
+
+export async function imageDeleteHandler(
+  file_names: string | string[],
+  type: "AWS" | "CLOUDINARY" = "CLOUDINARY"
+) {
+  switch (type) {
+    case "CLOUDINARY":
+      {
+        if (Array.isArray(file_names)) {
+          for (const file_name of file_names) {
+            file_handler(file_name);
+          }
+        } else {
+          file_handler(file_names);
+        }
+      }
+
+      break;
+
+    default:
+      {
+        return null;
+      }
+      break;
+  }
+}
+
+function file_handler(file_name: string) {
+  const get_public_id = file_name.split("/").slice(-2);
+  const image = get_public_id[1].split(".")[0];
+  const public_id = `${get_public_id[0]}/${image}`;
+  console.log("a typical example of public id", public_id);
+
+  const data = new CloudinaryHandler();
+  const delete_from_cloudinary = data.deleteFileFromCloudinary(public_id);
+}

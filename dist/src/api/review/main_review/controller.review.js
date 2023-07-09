@@ -26,7 +26,7 @@ const createReview = async (request, response, next) => {
 exports.createReview = createReview;
 const getOneReview = async (request, response, next) => {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.getOne({ model: model_review_1.REVIEW, exempt: "-__v" }, { id: request.params.id }, { model: "profile", fields: "-user" });
+    crud_review.getOne({ model: model_review_1.REVIEW, exempt: "-__v" }, { _id: request.params.id }, { model: "profile", fields: "-user" });
 };
 exports.getOneReview = getOneReview;
 const getUserReviews = async (request, response, next) => {
@@ -49,11 +49,11 @@ const updateReview = async (request, response, next) => {
         updated_at: Date.now,
     };
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.update({ model: model_review_1.REVIEW, exempt: "-__v" }, { ...body }, { id: request.params.id });
+    crud_review.update({ model: model_review_1.REVIEW, exempt: "-__v" }, { ...body }, { _id: request.params.id });
 };
 exports.updateReview = updateReview;
 const deleteReview = async (request, response, next) => {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.delete({ model: model_review_1.REVIEW, exempt: "-__v" }, { id: request.params.id });
+    crud_review.delete({ model: model_review_1.REVIEW, exempt: "-__v" }, { _id: request.params.id });
 };
 exports.deleteReview = deleteReview;

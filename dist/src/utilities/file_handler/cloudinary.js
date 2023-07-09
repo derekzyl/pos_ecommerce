@@ -30,6 +30,7 @@ const dotenv = __importStar(require("dotenv"));
 const stream_1 = require("stream");
 dotenv.config();
 const cloudinary_1 = require("cloudinary");
+const custom_error_1 = require("../custom_error");
 cloudinary_1.v2.config({
     cloud_name: "cybergenii",
     api_key: process.env.CLOUDINARY_KEY,
@@ -71,7 +72,7 @@ class CloudinaryHandler {
                 if (error)
                     reject(error);
                 if (result) {
-                    console.log(result, 'this is a result sheet');
+                    console.log("<---------------------------- this is result--", result);
                     resolve(result.secure_url);
                 }
             });
@@ -84,6 +85,15 @@ class CloudinaryHandler {
             n.pipe(cld_upload_stream);
             // const uploaded_data = await cloudinary.uploader.upload(file);
         });
+    }
+    async deleteFileFromCloudinary(file_id) {
+        try {
+            const f = await cloudinary_1.v2.uploader.destroy(file_id);
+            console.log("a file example result", f);
+        }
+        catch (error) {
+            return (0, custom_error_1.APP_ERROR)(error);
+        }
     }
 }
 exports.CloudinaryHandler = CloudinaryHandler;

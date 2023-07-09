@@ -17,7 +17,7 @@ const createNotification = async (request, response, next) => {
 exports.createNotification = createNotification;
 const getOneNotification = async (request, response, next) => {
     const crud_notification = new crud_1.Crud(request, response, next);
-    crud_notification.getOne({ model: model_notification_1.NOTIFICATION, exempt: "-__v -created_at updated_at" }, { notification_name: request.params.id }, {});
+    crud_notification.getOne({ model: model_notification_1.NOTIFICATION, exempt: "-__v -created_at updated_at" }, { _id: request.params.id }, {});
 };
 exports.getOneNotification = getOneNotification;
 const getManyNotification = async (request, response, next) => {
@@ -28,16 +28,16 @@ exports.getManyNotification = getManyNotification;
 const updateNotification = async (request, response, next) => {
     const body = request.body;
     const crud_notification = new crud_1.Crud(request, response, next);
-    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { notification_name: request.params.id }, { ...body });
+    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { _id: request.params.id }, { ...body });
 };
 exports.updateNotification = updateNotification;
 const deleteNotification = async (request, response, next) => {
     const crud_notification = new crud_1.Crud(request, response, next);
-    crud_notification.delete({ model: model_notification_1.NOTIFICATION, exempt: "-__v -created_at -updated_at" }, { notification_name: request.params.id });
+    crud_notification.delete({ model: model_notification_1.NOTIFICATION, exempt: "-__v -created_at -updated_at" }, { _id: request.params.id });
 };
 exports.deleteNotification = deleteNotification;
 const updateReadNotification = async (request, response, next) => {
     const crud_notification = new crud_1.Crud(request, response, next);
-    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { read_receipt: true }, { notification_name: request.params.id });
+    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { read_receipt: true }, { _id: request.params.id });
 };
 exports.updateReadNotification = updateReadNotification;

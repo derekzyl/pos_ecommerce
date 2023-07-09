@@ -26,7 +26,7 @@ productRouter
     ]),
     formFileHandler<{ image: string; other_image: string[] }>(
       { image: "", other_image: [] },
-      "category",
+      "product",
       false
     ),
     ProductIndex.create_product
