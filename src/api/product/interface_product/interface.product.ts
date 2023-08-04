@@ -19,6 +19,7 @@ export interface ProductI {
   search_tags: string[];
 }
 
+// add some features
 export interface ProductDocI extends ProductI, Document {}
 export type ProductBodyI = Omit<ProductI, "search_tags"> & {
   search_tag: string;

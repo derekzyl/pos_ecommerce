@@ -45,7 +45,7 @@ export class Queries {
 
   paginate() {
     const page = this.request_query.page * 1 || 1;
-    const limit = this.request_query.limit * 1 || 100;
+    const limit = this.request_query.limit * 1 || 50;
     const skip = (page - 1) * limit;
 
     this.model = this.model.skip(skip).limit(limit);
