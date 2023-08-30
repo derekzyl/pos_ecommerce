@@ -43,13 +43,13 @@ export const verifyEmail = async (
 ) => {
   try {
     const { tokenReset } = request.params;
-    const checker = tokenReset.split("-")[0];
     if (!tokenReset) {
       throw APP_ERROR(
         "error verifying email please try again",
         HTTP_RESPONSE.BAD_REQUEST
       );
     }
+    const checker = tokenReset.split("-")[0];
 
     if (checker !== "email") {
       throw APP_ERROR("error please try again", HTTP_RESPONSE.BAD_REQUEST);
