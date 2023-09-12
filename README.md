@@ -84,6 +84,8 @@ Contributions are welcome! If you find any issues or want to enhance the applica
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ---
+
+Thank you for using the Ecommerce Backend with POS Services! If you have any questions or need assistance, please don't hesitate to contact our support team at <support@example.com>.
